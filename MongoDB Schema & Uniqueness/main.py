@@ -147,10 +147,6 @@ def list_student(db):
     for student in students:
         pprint(student)
 
-
-'''New functions from here on out'''
-
-
 def add_department(db):
     """
     Adds a new, unique department to the database
@@ -338,7 +334,6 @@ if __name__ == '__main__':
                               unique=True, name='students_e_mail')
     pprint(students.index_information())
 
-    '''New code from here on out'''
     # Setting up the departments collection
     departments = db["departments"]
     department_count = departments.count_documents({})
@@ -369,6 +364,60 @@ if __name__ == '__main__':
         departments.create_index(
             [('description', pymongo.ASCENDING)], unique=True, name='departments_description')
     pprint(departments.index_information())
+
+    '''New code from here on out'''
+    # Setting up the schema to validate certain values in the departments collection
+    departments_validator = {
+        "validator":
+            {
+                "$jsonSchema":
+                    {
+                        "bsonType": "object",
+                        "description": "validates the values when creating a new department",
+                        "required": ["name", "abbreviation", "chair_name", "building", "office", "description"],
+                        "additionalProperties": False,
+                        "properties":
+                            {
+                                "_id": {},
+                                "building":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validates the building from a list of available buildings",
+                                        "enum": ['ANAC', 'CDC', 'DC', 'ECS', 'EN2', 'EN3', 'EN4', 'EN5', 'ET', 'HSCI',
+                                                 'NUR', 'VEC']
+                                    },
+                                "name":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validate the length of the department name",
+                                        "minLength": 10,
+                                        "maxLength": 50
+                                    },
+                                "abbreviation":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validate length of the abbreviation",
+                                        "maxLength": 6
+                                    },
+                                "chair_name":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validate length of the chair name",
+                                        "maxLength": 80
+                                    },
+                                "description":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validate length of the chair name",
+                                        "minLength": 10,
+                                        "maxLength": 80
+                                    }
+                            }
+                    }
+            }
+    }
+    # Calling the db.command function to validate the departments collection
+    db.command("collMod", "departments", validator=departments_validator)
 
     main_action: str = ''
     while main_action != menu_main.last_action():
