@@ -147,12 +147,15 @@ def list_student(db):
     for student in students:
         pprint(student)
 
+
 def add_department(db):
     """
     Adds a new, unique department to the database
     :param db: The connection to the current database
     :return: None
     """
+    # Calling the db.command function to validate the departments collection
+    db.command("collMod", "departments", validator=departments_validator)
     # Create a "pointer" to the departments collection within the db database.
     department_collection = db["departments"]
     # Initializing all the attributes
@@ -237,7 +240,6 @@ def add_department(db):
         print("Error: ", violation)
         # Letting the user try again
         add_department(db)
-
 
 
 def select_department(db):
@@ -376,6 +378,7 @@ if __name__ == '__main__':
     if 'departments_description' in departments_indexes.keys():
         departments.create_index(
             [('description', pymongo.ASCENDING)], unique=True, name='departments_description')
+        print("description present")
     pprint(departments.index_information())
 
     '''New code from here on out'''
@@ -429,8 +432,6 @@ if __name__ == '__main__':
                     }
             }
     }
-    # Calling the db.command function to validate the departments collection
-    db.command("collMod", "departments", validator=departments_validator)
 
     main_action: str = ''
     while main_action != menu_main.last_action():
