@@ -170,7 +170,7 @@ def add_department(db):
     unique_building_office: bool = False  # Unique department building and office
     unique_description: bool = False  # Unique department description
 
-    # A while loop to check if the attributes are unique or not
+    # A while loop to check all the required uniqueness constraints
     while (not unique_name or not unique_abbreviation or not unique_chair_name
            or not unique_building_office or not unique_description):
         # Asking the user for the attributes
@@ -223,8 +223,21 @@ def add_department(db):
         "office": office,
         "description": description
     }
-    # Inserting the department document into the database
-    results = department_collection.insert_one(department)
+
+    '''New code from here on out'''
+    # Using try-except block to catch any constraint violations
+    try:
+        # Inserting the department document into the database
+        results = department_collection.insert_one(department)
+        # Indicating the department was added
+        print("Department was added successfully")
+    except Exception as violation:
+        # Indicating the department was not added
+        print("Values entered violated one or more uniqueness constraints. Try again.")
+        print("Error: ", violation)
+        # Letting the user try again
+        add_department(db)
+
 
 
 def select_department(db):
