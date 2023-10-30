@@ -410,12 +410,14 @@ if __name__ == '__main__':
                                     {
                                         "bsonType": "string",
                                         "description": "validate length of the abbreviation",
+                                        "minLength": 2,  # To require the user to not leave it blank
                                         "maxLength": 6
                                     },
                                 "chair_name":
                                     {
                                         "bsonType": "string",
                                         "description": "validate length of the chair name",
+                                        "minLength": 2,  # To require the user to not leave it blank
                                         "maxLength": 80
                                     },
                                 "description":
