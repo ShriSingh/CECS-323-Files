@@ -233,9 +233,9 @@ def add_department(db):
         # Indicating the department was added
         print("Department was added successfully")
     except Exception as violation:
-        # Indicating the department was not added
-        print("Values entered violated the set uniqueness constraints or schema. Try again.")
-        print("Error: ", violation)
+        # Indicating the department was not added and why
+        print("Values entered violated the constraints set in the schema. Try again.")
+        print("Requirements:\n", violation)
         # Letting the user try again
         add_department(db)
 
@@ -389,7 +389,6 @@ if __name__ == '__main__':
                         "bsonType": "object",
                         "description": "validates the values when creating a new department",
                         "required": ["name", "abbreviation", "chair_name", "building", "office", "description"],
-                        "additionalProperties": False,
                         "properties":
                             {
                                 "_id": {},
