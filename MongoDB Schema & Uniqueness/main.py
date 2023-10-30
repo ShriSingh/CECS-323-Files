@@ -424,8 +424,7 @@ if __name__ == '__main__':
                                     {
                                         "bsonType": "int",
                                         "description": "validate the office number",
-                                        "minimum": 0,
-                                        "maximum": 99
+                                        "minimum": 1  # To require the user to enter at least a single-digit number
                                     },
                                 "description":
                                     {
