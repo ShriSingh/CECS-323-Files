@@ -306,10 +306,10 @@ if __name__ == '__main__':
     password: str = getpass.getpass('Mongo DB password -->')
     username: str = input('Database username [shriyanshsingh01] -->') or \
                     "shriyanshsingh01"
-    project: str = input('Mongo project name [singlecollection] -->') or \
-                   "singlecollection"
+    project: str = input('Mongo project name [cecs323mongodb] -->') or \
+                   "cecs323mongodb"
     hash_name: str = input(
-        '7-character database hash [u5t42ge] -->') or "u5t42ge"
+        '7-character database hash [byvx4mf] -->') or "byvx4mf"
 
     cluster = f"mongodb+srv://{username}:{password}@{project}.{hash_name}.mongodb.net/?retryWrites=true&w=majority"
 
