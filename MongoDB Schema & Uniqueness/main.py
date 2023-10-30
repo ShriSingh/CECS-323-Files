@@ -420,6 +420,13 @@ if __name__ == '__main__':
                                         "minLength": 2,  # To require the user to not leave it blank
                                         "maxLength": 80
                                     },
+                                "office":
+                                    {
+                                        "bsonType": "int",
+                                        "description": "validate the office number",
+                                        "minimum": 0,
+                                        "maximum": 99
+                                    },
                                 "description":
                                     {
                                         "bsonType": "string",
