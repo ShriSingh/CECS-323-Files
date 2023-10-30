@@ -1,6 +1,5 @@
 import pymongo
 from pymongo import MongoClient
-from pymongo.errors import WriteError
 from pprint import pprint
 import getpass
 from menu_definitions import menu_main
