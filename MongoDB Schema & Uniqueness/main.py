@@ -233,7 +233,7 @@ def add_department(db):
         results = department_collection.insert_one(department)
         # Indicating the department was added
         print("Department was added successfully")
-    except WriteError as violation:
+    except Exception as violation:
         # Indicating the department was not added
         print("Values entered violated one or more uniqueness constraints. Try again.")
         print("Error: ", violation)
@@ -383,48 +383,50 @@ if __name__ == '__main__':
     '''New code from here on out'''
     # Setting up the schema to validate certain values in the departments collection
     departments_validator = {
-        'validator':
+        "validator":
             {
-                '$jsonSchema':
+                "$jsonSchema":
                     {
-                        'bsonType': "object",
-                        'description': 'validates the values when creating a new department',
-                        'required': ['name', 'abbreviation', 'chair_name', 'building', 'office', 'description'],
-                        'additionalProperties': False,
-                        'properties':
+                        "bsonType": "object",
+                        "description": "validates the values when creating a new department",
+                        "required": ["name", "abbreviation", "chair_name", "building", "office", "description"],
+                        "additionalProperties": False,
+                        "properties":
                             {
-                                '_id': {},
-                                'building':
+                                "_id": {},
+                                "building":
                                     {
-                                        'bsonType': 'string',
-                                        'description': 'validates the building from a list of available buildings',
-                                        'enum': ['ANAC', 'CDC', 'DC', 'ECS', 'EN2', 'EN3', 'EN4', 'EN5', 'ET', 'HSCI',
+                                        "bsonType": "string",
+                                        "description": "validates the building from a list of available buildings",
+                                        "enum": ['ANAC', 'CDC', 'DC', 'ECS', 'EN2', 'EN3', 'EN4', 'EN5', 'ET', 'HSCI',
                                                  'NUR', 'VEC']
                                     },
-                                'name':
+                                "name":
                                     {
-                                        'bsonType': 'string',
-                                        'description': 'validate the length of the department name',
-                                        'minLength': 10,
-                                        'maxLength': 50
+                                        "bsonType": "string",
+                                        "description": "validate the length of the department name",
+                                        "minLength": 10,
+                                        "maxLength": 50
                                     },
-                                'abbreviation':
+                                "abbreviation":
                                     {
-                                        'bsonType': 'string',
-                                        'description': 'validate length of the abbreviation',
-                                        'maxLength': 6
+                                        "bsonType": "string",
+                                        "description": "validate length of the abbreviation",
+                                        "maxLength": 6
                                     },
-                                'chair_name': {
-                                    'bsonType': 'string',
-                                    'description': 'validate length of the chair name',
-                                    'maxLength': 80
-                                },
-                                'description': {
-                                    'bsonType': 'string',
-                                    'description': 'validate length of the chair name',
-                                    'minLength': 10,
-                                    'maxLength': 80
-                                }
+                                "chair_name":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validate length of the chair name",
+                                        "maxLength": 80
+                                    },
+                                "description":
+                                    {
+                                        "bsonType": "string",
+                                        "description": "validate length of the chair name",
+                                        "minLength": 10,
+                                        "maxLength": 80
+                                    }
                             }
                     }
             }
