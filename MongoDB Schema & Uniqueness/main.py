@@ -234,7 +234,7 @@ def add_department(db):
         print("Department was added successfully")
     except Exception as violation:
         # Indicating the department was not added
-        print("Values entered violated one or more uniqueness constraints. Try again.")
+        print("Values entered violated the set uniqueness constraints or schema. Try again.")
         print("Error: ", violation)
         # Letting the user try again
         add_department(db)
