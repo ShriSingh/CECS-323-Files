@@ -235,7 +235,7 @@ def add_department(db):
     except Exception as violation:
         # Indicating the department was not added and why
         print("Values entered violated the constraints set in the schema. Try again.")
-        print("Requirements:\n", violation)
+        print(f"Requirements: \n{violation}")
         # Letting the user try again
         add_department(db)
 
@@ -438,7 +438,7 @@ if __name__ == '__main__':
             }
     }
     # Calling the db.command function to validate the departments collection
-    db.command("collMod", "departments", **departments_validator)
+    db.command("collMod", "departments", **departments_validator)  # technically use "validator=" instead of "**"
 
     main_action: str = ''
     while main_action != menu_main.last_action():
