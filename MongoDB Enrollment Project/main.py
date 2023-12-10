@@ -8,6 +8,7 @@ from menu_definitions import delete_menu
 from menu_definitions import list_menu
 
 
+
 def add(db):
     """
     Present the add menu and execute the user's selection.
@@ -437,6 +438,63 @@ if __name__ == '__main__':
                     }
             }
     }
+
+    # Adding tht student's schema
+    students_validator = {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "description": "A person attending university to earn a degree or credential",
+            "required": ["last_name", "first_name", "e_mail"],
+            "additionalProperties": True,
+            "properties": {
+                "_id": {},
+                "last_name": {
+                    "bsonType": "string",
+                    "description": "surname of the student",
+                    "minLength": 3,
+                    "maxLength": 80
+                },
+                "first_name": {
+                    "bsonType": "string",
+                    "description": "given name of the student",
+                    "minLength": 3,
+                    "maxLength": 80
+                },
+                "e_mail": {
+                    "bsonType": "string",
+                    "description": "electronic mail address of the student",
+                    "minLength": 10,
+                    "maxLength": 255
+                }
+            }
+        }
+    }
+
+    # Adding the major's schema
+    majors_validator = {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "description": "A major of a university",
+            "required": ["name", "description"],
+            "additionalProperties": False,
+            "properties": {
+                "_id": {},
+                "name": {
+                    "bsonType": "string",
+                    "description": "name of major",
+                    "minLength": 10,
+                    "maxLength": 50
+                },
+                "description": {
+                    "bsonType": "string",
+                    "description": "description of major",
+                    "minimum": 10,
+                    "maximum": 80
+                },
+            }
+        }
+    }
+
     # Calling the db.command function to validate the departments collection
     db.command("collMod", "departments", **departments_validator)  # technically use "validator=" instead of "**"
 
