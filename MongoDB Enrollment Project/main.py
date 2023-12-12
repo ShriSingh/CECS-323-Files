@@ -148,6 +148,56 @@ def list_student(db):
     for student in students:
         pprint(student)
 
+# WE NEED TO ADD SOME SORT OF BACK POPULATES SO THAT WHEN YOU ADD A COURSE YOU ALSO
+# UPDATE THE DEPARTMENT COLLECTION
+def add_course():
+    courses_collection = db["Courses"]
+    # Get input from the user
+    course_name = input("Enter the course name: ")
+    course_number = int(input("Enter the course number: "))
+    description = input("Enter the course description: ")
+    units = int(input("Enter the number of units: "))
+
+    # Create a new course document
+    new_course = {
+        "course_name": course_name,
+        "course_number": course_number,
+        "description": description,
+        "units": units,
+    }
+
+    try:
+        result = courses_collection.insert_one(new_course)
+        print(f"Course added successfully with ID: {result.inserted_id}")
+
+    except Exception as e:
+        if "duplicate key" in str(e).lower():
+            print("Error: Course with the same name or number already exists.")
+        else:
+            print(f"Error adding course: {e}")
+
+def list_all_courses():
+    courses_collection = db["Courses"]
+    all_courses = courses_collection.find()
+
+    for course in all_courses:
+        pprint(course)
+
+
+# WE WILL NEED TO ADD WARNING FOR USER WHEN THEY TRY TO DELETE A COURSE THAT HAS A SECTION
+def delete_course():
+    course_name = input("Enter the course name to delete: ")
+
+    # Try to delete the course
+    try:
+        result = courses.delete_one({'course_name': course_name})
+        if result.deleted_count > 0:
+            print(f"Course '{course_name}' deleted successfully.")
+        else:
+            print(f"Course '{course_name}' not found.")
+
+    except Exception as e:
+        print(f"Error deleting course: {e}")
 
 def add_department(db):
     """
@@ -347,6 +397,33 @@ if __name__ == '__main__':
         students.create_index([('e_mail', pymongo.ASCENDING)],
                               unique=True, name='students_e_mail')
     pprint(students.index_information())
+
+    # ************************** Setting up the courses collection
+    courses = db["courses"]
+    courses_count = courses.count_documents({})
+    print(f"Courses in the collection so far: {courses_count}")
+
+    courses_indexes = courses.index_information()
+
+    # Check and create a unique index on course_number and course_name
+    if 'course_number' in courses_indexes.keys() and 'course_name' in courses_indexes.keys():
+        print("Course number and name indexes present.")
+    else:
+        # Create a single UNIQUE index on BOTH the course_number and course_name.
+        courses.create_index([('course_number', pymongo.ASCENDING), ('course_name', pymongo.ASCENDING)],
+                             unique=True,
+                             name="courses_number_and_name")
+
+    # Check and create a unique index on e-mail address
+    if 'course_name' in courses_indexes.keys():
+        print("Course name index present.")
+    else:
+        # Create a UNIQUE index on just the course_name
+        courses.create_index([('course_name', pymongo.ASCENDING)],
+                             unique=True, name='courses_name')
+
+    # Print all indexes
+    pprint(courses.index_information())
 
     # Setting up the departments collection
     departments = db["departments"]
