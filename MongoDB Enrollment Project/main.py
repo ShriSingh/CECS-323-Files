@@ -495,6 +495,40 @@ if __name__ == '__main__':
         }
     }
 
+    courses_validator = {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "description": "A class that a student may enroll in, offered by the University.",
+            "required": ["number", "name"],
+            "additionalProperties": False,
+            "properties": {
+                "_id": {},
+                "course_name": {
+                    "bsonType": "string",
+                    "description": "name of course",
+                    "minLength": 10,
+                    "maxLength": 50
+                },
+                "course_number": {
+                    "bsonType": "int",
+                    "description": "number of major",
+                    "minimum": 1
+                },
+                "description": {
+                    "bsonType": "string",
+                    "description": "description of course",
+                    "minimum": 10,
+                    "maximum": 80
+                },
+                "units": {
+                    "bsonType": "int",
+                    "description": "number of units in course",
+                    "minimum": 1
+                },
+
+            }
+        }}
+
     # Calling the db.command function to validate the departments collection
     db.command("collMod", "departments", **departments_validator)  # technically use "validator=" instead of "**"
 
